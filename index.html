@@ -434,7 +434,7 @@
         <button onclick="showPage('org')">👥 Struktur Organisasi</button>
         <button onclick="showPage('inv')">📦 Inventaris & Layanan</button>
         <button onclick="showPage('docs')">📚 Dokumentasi</button>
-        <button onclick="showPage('diskusi')">💬 Diskusi & Masukan</button>       </nav>
+        <button onclick="showPage('diskusi')">💬 Diskusi & Masukan</button>       </nav>
 
       <footer class="sidebar-footer">
         <p>&copy; 2024 IT Department<br />Internal Portal</p>
@@ -656,26 +656,24 @@
             </div>
           </div>
         </section>
-        
+       
                 <section id="diskusi">
           <h2>💬 Diskusi & Masukan</h2>
           <p style="margin-bottom: 20px;">Silakan tinggalkan komentar atau laporan kendala di bawah ini. (Login GitHub diperlukan)</p>
             <div class="giscus-container">
               <script src="https://giscus.app/client.js"
-                  data-repo="Ghosf/enesiscikarang"
-                  data-repo-id="R_kgDOQhckyg"
-                  data-category="General"
-                  data-category-id="DIC_kwDOQhckys4CzUmk"
-                  data-mapping="pathname"
-                  data-strict="0"
-                  data-reactions-enabled="1"
-                  data-emit-metadata="0"
-                  data-input-position="bottom"
-                  data-theme="light"
-                  data-lang="en"
-                  crossorigin="anonymous"
-                  async>
-              </script>
+                  data-repo="Ghosf/enesiscikarang"
+                  data-repo-id="R_kgDOQhckyg"
+                  data-category="General"
+                  data-category-id="DIC_kwDOQhckys4CzUmk"
+                  data-mapping="specific"                   data-term="IT-Portal-Diskusi-Umum"                   data-strict="0"
+                  data-reactions-enabled="1"
+                  data-input-position="bottom"
+                  data-theme="light"
+                  data-lang="en"
+                  crossorigin="anonymous"
+                  async>
+              </script>
               </div>
         </section>
       </div>
@@ -696,7 +694,8 @@
           btn.classList.remove("active");
         });
         // Karena event target bisa span atau icon di dalam button, pastikan ambil buttonnya
-        const activeBtn = event.target.closest("button") || event.target;
+        // Gunakan event.currentTarget untuk memastikan mengambil elemen button yang di-klik
+        const activeBtn = event.currentTarget;
         activeBtn.classList.add("active");
 
         // Ganti judul di Banner sesuai menu
@@ -705,7 +704,7 @@
           org: "Struktur Organisasi",
           inv: "Data Inventaris & Layanan",
           docs: "Dokumentasi & SOP",
-          **diskusi: "Diskusi dan Umpan Balik Tim IT"** // Tambahkan judul baru
+          diskusi: "Diskusi dan Umpan Balik Tim IT" // Tambahkan judul baru
         };
         document.getElementById("page-title").innerText = titles[page];
       }
@@ -717,11 +716,49 @@
         slideIndex = (slideIndex + n + slides.length) % slides.length;
         container.style.transform = `translateX(-${slideIndex * 100}%)`;
       }
+      
+      // INISIALISASI: Panggil showPage('home') saat halaman pertama kali dimuat
+      window.onload = () => {
+          // Panggil showPage untuk mengaktifkan tab 'Beranda' dan kontennya.
+          // Perlu event palsu karena showPage mencoba mengakses event.target/currentTarget.
+           const homeButton = document.querySelector('nav button.active');
+           if (homeButton) {
+               showPage('home', { currentTarget: homeButton });
+           } else {
+               // Fallback jika tidak ada tombol aktif, hanya tampilkan halaman
+               document.getElementById('home').style.display = 'block';
+           }
+      };
       
-      // INISIALISASI: Panggil showPage('home') saat halaman pertama kali dimuat
-      window.onload = () => {
-          showPage('home');
-      };
+      // Patching showPage agar kompatibel dengan window.onload
+      function showPage(page, event) {
+        // ... (sisanya sama seperti di atas)
+        
+        document.querySelectorAll("section").forEach((sec) => {
+          sec.style.display = "none";
+        });
+        document.getElementById(page).style.display = "block";
+        document.querySelectorAll("nav button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        if (event && event.currentTarget) {
+          event.currentTarget.classList.add("active");
+        } else {
+          // Cari tombol yang sesuai dan aktifkan
+          document.querySelector(`nav button[onclick*="'${page}'"]`).classList.add("active");
+        }
+        
+        const titles = {
+          home: "Dashboard Departemen IT",
+          org: "Struktur Organisasi",
+          inv: "Data Inventaris & Layanan",
+          docs: "Dokumentasi & SOP",
+          diskusi: "Diskusi dan Umpan Balik Tim IT"
+        };
+        document.getElementById("page-title").innerText = titles[page];
+      }
+      
     </script>
   </body>
 </html>
