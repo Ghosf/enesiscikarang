@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Departemen IT - PT Enesis</title>
     <style>
-      /* --- RESET & BASIC --- */
+      /* --- KODE CSS LAMA (SAMA) --- */
       * {
         box-sizing: border-box;
       }
@@ -71,7 +71,8 @@
         gap: 5px;
       }
 
-      nav button {
+      /* Perubahan: Style untuk A (Link) */
+      nav a {
         background: transparent;
         border: none;
         color: #dcfce7;
@@ -82,21 +83,40 @@
         transition: 0.3s;
         border-left: 5px solid transparent;
         width: 100%;
+        text-decoration: none; /* Hilangkan garis bawah link */
+        display: block; /* Agar mengisi seluruh area tombol */
       }
 
-      nav button:hover {
+      nav a:hover {
         background-color: #166534;
         color: white;
         padding-left: 30px;
       }
-
-      nav button.active {
+      
+      /* Tambahkan selector untuk A yang sedang aktif */
+      nav a.active {
         background-color: #16a34a;
         color: white;
         border-left: 5px solid #fff;
         font-weight: bold;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
+      
+      /* Ini adalah kunci untuk ACTIVE LINK: Cek apakah ID di URL cocok dengan HREF link */
+      nav a[href="#home"]:target, 
+      nav a[href="#org"]:target, 
+      nav a[href="#inv"]:target, 
+      nav a[href="#docs"]:target {
+          /* Hapus semua kelas active */
+          /* Note: ini dilakukan di HTML/script jika menggunakan JS, tapi tanpa JS ini harus manual.
+             Karena kita tidak pakai JS, kita buat default:active untuk home, dan sisanya hanya aktif 
+             jika target-nya sama dengan href. */
+      }
+      
+      /* Logika aktif link tanpa JS: Tombol Beranda harus aktif by default */
+      nav a[href="#home"],
+      /* Jika halaman di-load tanpa hash (#) atau hash-nya adalah #home, tombol ini harus aktif.
+         Ini hanya bisa dilakukan dengan CSS :target (jika ada hash) */
 
       footer.sidebar-footer {
         padding: 20px;
@@ -114,18 +134,17 @@
         background-color: #f8fafc;
       }
 
-      /* Hero Banner di dalam Main Content */
+      /* Hero Banner dan elemen lainnya (SAMA) */
       .hero-banner {
         width: 100%;
         height: 250px;
-        background-image: url("asset/galeri/photo/fotodepan.jpg"); 
+        background-image: url("../enesis/asset/galeri/photo/fotodepan.jpg");
         background-size: cover;
         background-position: center;
         position: relative;
         display: flex;
         align-items: flex-end;
       }
-
       .hero-overlay {
         width: 100%;
         height: 100%;
@@ -158,22 +177,22 @@
         font-size: 1.1rem;
       }
 
-      /* Content Container */
+      /* Content Container (SAMA) */
       .content-wrapper {
         padding: 30px;
         max-width: 1200px;
         margin: 0 auto;
       }
-
+      
+      /* --- KUNCI: LOGIKA DISPLAY SECTION TANPA JAVASCRIPT --- */
       section {
         background: white;
         padding: 2rem;
         border-radius: 12px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        display: none; /* Default hidden */
+        **display: none; /* Default: Sembunyikan semua section */**
         animation: fadeIn 0.5s ease-in-out;
-        margin-bottom: 20px; /* Tambahkan margin bawah */
       }
 
       @keyframes fadeIn {
@@ -186,177 +205,45 @@
           transform: translateY(0);
         }
       }
+      
+      /* KUNCI 1: Tampilkan Section yang ID-nya cocok dengan # di URL */
+      **section:target {**
+        **display: block;**
+      **}**
+      
+      /* KUNCI 2: Jika tidak ada # di URL (halaman pertama kali di-load), tampilkan #home */
+      **section#home:not(:target) {**
+          **display: block;**
+      **}**
 
-      section:first-of-type {
-        display: block;
-      }
-
+      /* --- KODE CSS LAINNYA (SAMA) --- */
       h3 {
         color: #15803d;
         border-bottom: 2px solid #bbf7d0;
         padding-bottom: 10px;
         margin-top: 30px;
       }
+      
+      /* Tambahan: Logika untuk Active Button tanpa JS */
+      nav a[href="#home"].default-active:not(:target),
+      nav a[href="#org"]:target,
+      nav a[href="#inv"]:target,
+      nav a[href="#docs"]:target {
+        background-color: #16a34a;
+        color: white;
+        border-left: 5px solid #fff;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* --- HILANGKAN CAROUSEL CSS KARENA PERLU JS --- */
+      /* Kamu tidak bisa membuat carousel bekerja tanpa JS. Jadi, bagian ini dihilangkan/diabaikan */
+      .carousel { display: block; }
+      .carousel-container { display: flex; flex-direction: column; gap: 10px; }
+      .carousel-container img { width: 100%; height: auto; object-fit: cover; }
+      .carousel button { display: none; } /* Hilangkan tombol navigasi */
 
-      /* --- COMPONENTS --- */
-
-      /* Welcome Box */
-      .welcome-box {
-        background: #dcfce7;
-        color: #14532d;
-        padding: 15px 20px;
-        border-radius: 8px;
-        border-left: 5px solid #16a34a;
-        margin-bottom: 20px;
-      }
-
-      /* Layanan List */
-      .layanan li {
-        margin-bottom: 10px;
-        padding: 15px;
-        background: #f0fdf4;
-        border-radius: 8px;
-        border: 1px solid #bbf7d0;
-        transition: 0.3s;
-        list-style: none;
-      }
-      .layanan li:hover {
-        background: #16a34a;
-        color: white;
-        transform: translateX(5px);
-      }
-
-      /* Struktur Organisasi */
-      .org-diagram {
-        text-align: center;
-        margin-bottom: 2rem;
-        overflow-x: auto;
-      }
-      .org-diagram .level-1 {
-        background: #16a34a;
-        color: white;
-        padding: 12px 25px;
-        border-radius: 50px;
-        display: inline-block;
-        font-weight: bold;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      }
-      .org-diagram .line {
-        width: 2px;
-        height: 30px;
-        background: #cbd5e1;
-        margin: 0 auto;
-      }
-      .org-diagram .level-2 {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-      .org-diagram .level-2 div {
-        background: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        font-weight: 600;
-        color: #334155;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      /* Inventaris Grid */
-      .inventaris-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-      }
-
-      .inventaris-box {
-        background: white;
-        border-radius: 12px;
-        padding: 0;
-        border: 1px solid #e2e8f0;
-        overflow: hidden;
-        transition: transform 0.3s ease;
-      }
-
-      .inventaris-box:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .box-content {
-        padding: 20px;
-      }
-
-      /* Table Styles */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.95rem;
-      }
-      th {
-        background: #16a34a;
-        color: white;
-        padding: 12px;
-        text-align: left;
-      }
-      td {
-        padding: 12px;
-        border-bottom: 1px solid #e2e8f0;
-      }
-      tr:nth-child(even) {
-        background-color: #f8fafc;
-      }
-      tr:hover {
-        background-color: #f0fdf4;
-      }
-
-      /* Images in Documentation */
-      #docs .inventaris-box img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-bottom: 3px solid #16a34a;
-      }
-
-      /* Carousel */
-      .carousel {
-        position: relative;
-        width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
-        overflow: hidden;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      }
-      .carousel-container {
-        display: flex;
-        transition: transform 0.6s ease;
-      }
-      .carousel-container img {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-      }
-      .carousel button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        border: none;
-        padding: 15px;
-        cursor: pointer;
-        border-radius: 50%;
-      }
-      .carousel .prev {
-        left: 15px;
-      }
-      .carousel .next {
-        right: 15px;
-      }
-
-      /* --- RESPONSIVE MOBILE --- */
+      /* --- RESPONSIVE MOBILE (SAMA) --- */
       @media (max-width: 768px) {
         body {
           flex-direction: column;
@@ -395,7 +282,7 @@
           padding: 0;
           overflow-x: auto;
         }
-        nav button {
+        nav a { /* Ganti button ke a */
           padding: 10px;
           font-size: 0.9rem;
           white-space: nowrap;
@@ -420,7 +307,7 @@
     <aside>
       <div class="brand">
         <img
-          src="asset/galeri/photo/enesislogo.png"
+          src="../enesis/asset/galeri/photo/enesislogo.png"
           alt="Logo Enesis"
         />
         <div>
@@ -428,13 +315,13 @@
           <span>PT Enesis Group</span>
         </div>
       </div>
-
-      <nav>
-        <button class="active" onclick="showPage('home')">🏠 Beranda</button>
-        <button onclick="showPage('org')">👥 Struktur Organisasi</button>
-        <button onclick="showPage('inv')">📦 Inventaris & Layanan</button>
-        <button onclick="showPage('docs')">📚 Dokumentasi</button>
-        <button onclick="showPage('diskusi')">💬 Diskusi & Masukan</button>       </nav>
+      
+            <nav>
+        <a href="#home" class="default-active">🏠 Beranda</a>
+        <a href="#org">👥 Struktur Organisasi</a>
+        <a href="#inv">📦 Inventaris & Layanan</a>
+        <a href="#docs">📚 Dokumentasi</a>
+      </nav>
 
       <footer class="sidebar-footer">
         <p>&copy; 2024 IT Department<br />Internal Portal</p>
@@ -445,13 +332,13 @@
       <div class="hero-banner">
         <div class="hero-overlay"></div>
         <div class="hero-text">
-          <h2 id="page-title">IT Information Portal</h2>
+                    <h2>IT Information Portal</h2> 
           <p>Pusat data, inventaris, dan prosedur kerja Departemen IT</p>
         </div>
       </div>
 
       <div class="content-wrapper">
-        <section id="home">
+                <section id="home">
           <div class="welcome-box">
             <h3>👋 Selamat Datang, Rekan Enesis!</h3>
             <p>
@@ -482,24 +369,22 @@
           </ul>
 
           <h3>3. Galeri Kegiatan</h3>
-          <div class="carousel">
+                    <div class="carousel">
             <div class="carousel-container">
               <img
-                src="asset/galeri/photo/pasien.jpeg"
+                src="../enesis/asset/galeri/photo/pasien.jpeg"
                 alt="Tim IT"
               />
               <img
-                src="asset/galeri/photo/21.jpeg"
+                src="../enesis/asset/galeri/photo/21.jpeg"
                 alt="Server Room"
               />
               <img
-                src="asset/galeri/photo/abtu.jpeg"
+                src="../enesis/asset/galeri/photo/abtu.jpeg"
                 alt="Meeting IT"
               />
             </div>
-            <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-            <button class="next" onclick="moveSlide(1)">&#10095;</button>
-          </div>
+                      </div>
         </section>
 
         <section id="org">
@@ -609,9 +494,8 @@
 
           <div class="inventaris-container">
             <div class="inventaris-box">
-              
               <img
-                src="asset/galeri/photo/servis.jpg"
+                src="../enesis/asset/galeri/photo/servis.jpg"
                 alt="Penanganan Keluhan"
               />
               <div class="box-content">
@@ -622,7 +506,7 @@
 
             <div class="inventaris-box">
               <img
-                src="asset/galeri/photo/server.jpeg"
+                src="../enesis/asset/galeri/photo/server.jpeg"
                 alt="Server Maintenance"
               />
               <div class="box-content">
@@ -633,7 +517,7 @@
 
             <div class="inventaris-box">
               <img
-                src="asset/galeri/photo/inulpc.jpeg"
+                src="../enesis/asset/galeri/photo/inulpc.jpeg"
                 alt="Install Ulang"
               />
               <div class="box-content">
@@ -645,101 +529,16 @@
             </div>
 
             <div class="inventaris-box">
-              <img 
-                src="asset/galeri/photo/cctv.png" 
-                alt="CCTV" 
-              />
+              <img src="../enesis/asset/galeri/photo/cctv.png" alt="CCTV" />
               <div class="box-content">
                 <h3>🎥 SOP Keamanan Fisik</h3>
                 <p>Prosedur pengecekan CCTV dan Access Door.</p>
               </div>
             </div>
           </div>
-        </section>
+        </section>
       </div>
     </main>
 
-    <script>
-      function showPage(page) {
-        // Hide all sections
-        document.querySelectorAll("section").forEach((sec) => {
-          sec.style.display = "none";
-        });
-
-        // Show selected section
-        document.getElementById(page).style.display = "block";
-
-        // Update active button
-        document.querySelectorAll("nav button").forEach((btn) => {
-          btn.classList.remove("active");
-        });
-        // Karena event target bisa span atau icon di dalam button, pastikan ambil buttonnya
-        // Gunakan event.currentTarget untuk memastikan mengambil elemen button yang di-klik
-        const activeBtn = event.currentTarget;
-        activeBtn.classList.add("active");
-
-        // Ganti judul di Banner sesuai menu
-        const titles = {
-          home: "Dashboard Departemen IT",
-          org: "Struktur Organisasi",
-          inv: "Data Inventaris & Layanan",
-          docs: "Dokumentasi & SOP",
-          diskusi: "Diskusi dan Umpan Balik Tim IT" // Tambahkan judul baru
-        };
-        document.getElementById("page-title").innerText = titles[page];
-      }
-
-      let slideIndex = 0;
-      function moveSlide(n) {
-        const container = document.querySelector(".carousel-container");
-        const slides = document.querySelectorAll(".carousel-container img");
-        slideIndex = (slideIndex + n + slides.length) % slides.length;
-        container.style.transform = `translateX(-${slideIndex * 100}%)`;
-      }
-      
-      // INISIALISASI: Panggil showPage('home') saat halaman pertama kali dimuat
-      window.onload = () => {
-          // Panggil showPage untuk mengaktifkan tab 'Beranda' dan kontennya.
-          // Perlu event palsu karena showPage mencoba mengakses event.target/currentTarget.
-           const homeButton = document.querySelector('nav button.active');
-           if (homeButton) {
-               showPage('home', { currentTarget: homeButton });
-           } else {
-               // Fallback jika tidak ada tombol aktif, hanya tampilkan halaman
-               document.getElementById('home').style.display = 'block';
-           }
-      };
-      
-      // Patching showPage agar kompatibel dengan window.onload
-      function showPage(page, event) {
-        // ... (sisanya sama seperti di atas)
-        
-        document.querySelectorAll("section").forEach((sec) => {
-          sec.style.display = "none";
-        });
-        document.getElementById(page).style.display = "block";
-        document.querySelectorAll("nav button").forEach((btn) => {
-          btn.classList.remove("active");
-        });
-
-        if (event && event.currentTarget) {
-          event.currentTarget.classList.add("active");
-        } else {
-          // Cari tombol yang sesuai dan aktifkan
-          document.querySelector(`nav button[onclick*="'${page}'"]`).classList.add("active");
-        }
-        
-        const titles = {
-          home: "Dashboard Departemen IT",
-          org: "Struktur Organisasi",
-          inv: "Data Inventaris & Layanan",
-          docs: "Dokumentasi & SOP",
-          diskusi: "Diskusi dan Umpan Balik Tim IT"
-        };
-        document.getElementById("page-title").innerText = titles[page];
-      }
-      
-    </script>
-  </body>
+      </body>
 </html>
-
